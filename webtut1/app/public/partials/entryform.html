@@ -1,0 +1,24 @@
+<div>
+    <div>My name is {{name}}</div>
+    <div>My email is {{email}}</div>
+
+    <ul>
+        <li ng-repeat="item in contacts">
+            <span><b>Name:</b>{{item.name}}</span>
+            <span><b>Email:</b>{{item.email}}</span>
+        </li>
+    </ul>
+
+    <div class="jumbotron container">
+        <div>
+            Name: <input type="input" ng-model="contact.name">
+        </div>
+        <div>
+            Email: <input type="input" ng-model="contact.email">
+        </div>
+        <div>
+            <button ng-click="saveData()">save</button>
+        </div>
+    </div>
+
+</div>

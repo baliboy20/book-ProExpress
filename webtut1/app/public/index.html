@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html ng-app="mainApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+
+
+</head>
+<body>
+
+<!--<p >Hello {{names}}!</p>-->
+<!--<input type="text" ng-model="names">-->
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="navbar-header">
+        <button class="navbar-toggle" type="button" ng-init="navCollapsed=true"
+                ng-click="navCollapsed = !navCollapsed">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Tuesday Example</a>
+    </div>
+
+    <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'">
+        <!--menu items-->
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Global</a></li>
+            <li dropdown="">
+                <a href="#" dropdown-toggle="">Users<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#/entryform">entryform</a></li>
+                    <li><a href="#/report">Report</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+
+<div ng-controller="mainCtrl">
+
+    <p>Input something in the input box:</p>
+
+    <p>Name: <input type="text" ng-model="name"></p>
+
+    <p>{{name}}</p>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{suckess}}</h3>
+        </div>
+        <div class="panel-body">
+            <ui-view></ui-view>
+
+        </div>
+    </div>
+
+
+</div>
+
+
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+
+<script>
+    var mod = angular.module('mainApp', ['ui.bootstrap', 'routeMod']);
+    mod.config(function () {
+
+    });
+
+    var modi = angular.module('routeMod', ['ui.router'])
+            .config(function ($stateProvider, $urlRouterProvider) {
+
+                $urlRouterProvider.otherwise('/home');
+
+                $stateProvider
+                        .state('home', {
+                            url: '/home',
+                            template: '<h3>Home</h3>'
+                        })
+                        .state('report', {
+                            url: '/report',
+                            template: '<h3>report</h3>'
+                        })
+                        .state('entryform', {
+                            url: '/entryform',
+                            templateUrl: '/partials/entryform.html',
+                            controller : 'entryformCtrl'
+                        })
+
+//                console.log('routing config')
+            }).factory('myService', function () {
+
+                return {
+                    sayHello: function () {
+                        return 'sayHello';
+                    }
+                }
+            })
+
+
+    mod.controller('mainCtrl', function ($scope, $q, $interval) {
+//        console.log('mainCtrl inti..');
+        $scope.name = 'William Paulton';
+
+        console.log('config init');
+        var deferred = $q.defer(), val = 3;
+
+        var promise = deferred.promise;
+
+
+        function suck(value) {
+            $scope.suckess = "Boys we have stopped at " + value;
+        };
+
+        function fail(value) {
+            $scope.suckess = "Boys try again next year.";
+        };
+
+        function update(value) {
+            $scope.suckess = "Boys we have counted " + value + 'of 100';
+        };
+
+
+        var interval = $interval(function (val) {
+//            console.log('still ticking..');
+            if (val > 3) {
+                deferred.reject(val + 10);
+
+            } else {
+                deferred.notify(++val);
+            }
+        }, 500);
+
+        promise.then(suck, fail, update);
+        promise.catch(function () {
+//            console.log('this should not be called');
+        });
+        promise.finally(function () {
+//            console.log('finally called...');
+            $interval.cancel(interval)
+        })
+
+
+    }).factory('countdown', function ($inteval) {
+        var curval = 0;
+        var fn = function increment(curval) {
+            curval++;
+        };
+        var delay = 500;
+        repeat = 0;
+
+
+    });
+
+</script>
+<script src="js/entryformCtrl.js"></script>
+
+</body>
+</html>
